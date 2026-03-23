@@ -144,8 +144,8 @@ export default function App() {
     setIsAnalyzing(true);
     
     try {
-      const apiKey = state.apiKey || process.env.GEMINI_API_KEY;
-      if (!apiKey) throw new Error('API Key missing');
+      const apiKey = (state.apiKey && state.apiKey.trim() !== '') ? state.apiKey : process.env.GEMINI_API_KEY;
+      if (!apiKey) throw new Error('API Key missing. Please set your Gemini API Key in Settings.');
 
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
@@ -197,8 +197,8 @@ export default function App() {
     }));
     
     try {
-      const apiKey = state.apiKey || process.env.GEMINI_API_KEY;
-      if (!apiKey) throw new Error('API Key missing');
+      const apiKey = (state.apiKey && state.apiKey.trim() !== '') ? state.apiKey : process.env.GEMINI_API_KEY;
+      if (!apiKey) throw new Error('API Key missing. Please set your Gemini API Key in Settings.');
 
       const ai = new GoogleGenAI({ apiKey });
       
@@ -563,7 +563,7 @@ export default function App() {
         {/* --- Footer --- */}
         <footer className="py-12 text-center border-t border-zinc-900 mt-12">
           <p className="text-zinc-600 text-xs font-medium">
-            Prompting by <a href="https://xizital.com" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Xizital</a>
+            © {new Date().getFullYear()} Kiến Trúc Đồng Bộ. Tất cả quyền được bảo lưu.
           </p>
         </footer>
       </div>
@@ -571,49 +571,6 @@ export default function App() {
       {/* --- Fixed UI Elements (Not Scaled) --- */}
       
       {/* Zoom Indicator */}
-      <div className="fixed top-20 right-6 z-30 flex items-center gap-3 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 px-4 py-2 rounded-full shadow-lg text-sm">
-        <span className="font-medium text-zinc-300">{zoom}%</span>
-        <button onClick={() => setZoom(100)} className="p-1 hover:bg-zinc-800 rounded-full transition-colors" title="Reset Zoom">
-          <RotateCcw className="w-4 h-4 text-blue-500" />
-        </button>
-      </div>
-
-      {/* Floating Bubble */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <button 
-          onClick={() => setIsBubbleOpen(!isBubbleOpen)}
-          className="w-14 h-14 rounded-full bg-blue-600 shadow-2xl flex items-center justify-center text-white transition-transform hover:scale-110 active:scale-95"
-        >
-          <Coffee className="w-6 h-6" />
-        </button>
-        
-        <AnimatePresence>
-          {isBubbleOpen && (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="absolute bottom-20 right-0 w-72 bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-4"
-            >
-              <div className="text-center space-y-2">
-                <h4 className="font-bold text-white">Mời Xizital ly cà phê</h4>
-                <p className="text-xs text-zinc-500">Nếu bạn thấy những chia sẻ này hữu ích!</p>
-              </div>
-              <div className="aspect-square rounded-2xl overflow-hidden border border-zinc-800">
-                <img 
-                  src="https://xizital.com/wp-content/uploads/2025/10/z7084477223291_1aa5f551f0f549b6d3d1d72d70e3d4e4.jpg" 
-                  alt="QR Coffee" 
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <p className="text-[10px] text-center text-zinc-600 italic">
-                Đổi nội dung bong bóng này tùy theo nhu cầu của bạn.
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
 
       {/* Modals */}
       <AnimatePresence>
